@@ -3,8 +3,10 @@ const app = express();
 const PORT = 3000;
 const db = require('./db/db.json')
 const uuid = require('./helpers/uuid')
+const fs = require('fs');
 
-
+app.use(express.urlencoded({extended: true}))
+app.use(express.json())
 app.use(express.static("public"))
 
 app.get("/", (req, res) => {
@@ -21,6 +23,34 @@ app.get("/api/notes", (req, res) => {
 
 app.post("/api/notes", (req, res) => {
 
+    const { title, text } = req.body;
+
+    if (title && text) {
+        const newNote = {
+            title: title,
+            text: text,
+            note_id: uuid(),
+        };
+
+        const response = {
+            status: 'success',
+            body: newNote,
+        };
+
+        res.json(response)
+        db.push(newNote)
+
+        fs.writeFile('./db/db.json', JSON.stringify(db), (err) => {
+            if (err) {
+                console.log(err)
+            }
+        })
+
+        console.log(db);
+        res.send(db);
+    } else {
+        res.send('Error in posting review');
+    }
 })
 
 app.listen(PORT, () => {
