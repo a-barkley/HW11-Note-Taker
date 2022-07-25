@@ -7,7 +7,9 @@ const fs = require('fs');
 
 app.use(express.urlencoded({extended: true}))
 app.use(express.json())
+
 app.use(express.static("public"))
+
 
 app.get("/", (req, res) => {
     res.sendFile(__dirname + '/public/index.html')
@@ -46,12 +48,18 @@ app.post("/api/notes", (req, res) => {
             }
         })
 
-        console.log(db);
         res.send(db);
     } else {
-        res.send('Error in posting review');
+        res.send('Error in posting note');
     }
 })
+
+app.post("/api/notes", (req, res) => {
+    const {title, text} = req.body;
+    
+})
+
+
 
 app.listen(PORT, () => {
     console.log(`App listening on port ${PORT}`)
