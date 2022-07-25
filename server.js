@@ -31,7 +31,7 @@ app.post("/api/notes", (req, res) => {
         const newNote = {
             title: title,
             text: text,
-            note_id: uuid(),
+            id: uuid(),
         };
 
         const response = {
@@ -53,12 +53,6 @@ app.post("/api/notes", (req, res) => {
         res.send('Error in posting note');
     }
 })
-
-app.post("/api/notes", (req, res) => {
-    const {title, text} = req.body;
-    
-})
-
 
 
 app.listen(PORT, () => {
